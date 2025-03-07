@@ -20,7 +20,14 @@
             </FloatLabel>
           </div>
         </div>
-        <div class="col-12 md:col-8"></div>
+        <div class="col-12 md:col-8">
+          <p class="text-sm md:text-md text-center">Coffee Shops near you:</p>
+          <div class="my-5 p-1 border-1 border-round-md text-sm md:text-md">
+            <div v-for="shop in coffeeShops" :key="shop.name">
+              {{ shop.name }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,15 +40,34 @@ import { createToken, fetchCoffeeShops } from '@/scripts/api.js'
 const userInputX = ref(null)
 const userInputY = ref(null)
 const userInputName = ref(null)
+const coffeeShops = ref()
 const userX = parseFloat(0)
 const userY = parseFloat(0)
 
+onMounted(async () => {
+  try {
+    const baseUrl = 'https://api-challenge.agilefreaks.com'
+    const token = await createToken(baseUrl)
+    if (!token) {
+      return
+    }
+
+    const shopsData = await fetchCoffeeShops(baseUrl, token)
+    if (shopsData && shopsData.length > 0) {
+      coffeeShops.value = shopsData
+    } else {
+      throw new Error('Failed to fetch coffee shops.')
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+})
 // if (isNaN(userX) || isNaN(userY)) {
 //   console.error('Invalid coordinates. Please provide numbers.')
 //   return
 // }
 
-const nearestShops = getNearestShops({ x: userX, y: userY })
+// const nearestShops = getNearestShops({ x: userX, y: userY })
 
 // if (nearestShops && nearestShops.length > 0) {
 //   nearestShops.forEach((shop) => {
