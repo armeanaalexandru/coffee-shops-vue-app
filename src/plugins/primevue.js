@@ -3,6 +3,7 @@ import Aura from '@primeuix/themes/aura'
 
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
 import FloatLabel from 'primevue/floatlabel'
 
 export default {
@@ -17,6 +18,7 @@ export default {
     })
     app.component('Button', Button)
     app.component('InputText', InputText)
+    app.component('InputNumber', InputNumber)
     app.component('FloatLabel', FloatLabel)
   },
 }
