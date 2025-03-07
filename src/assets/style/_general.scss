@@ -1,0 +1,14 @@
+@use 'fonts';
+
+html,
+body,
+#app {
+  font-family: fonts.$mono-fontface-stack !important;
+  color: #222;
+}
+
+.container {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 15px;
+}
