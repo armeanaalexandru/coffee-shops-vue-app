@@ -2,5 +2,5 @@
 
 To start the project:
 
-yarn
-yarn dev
+yarn # get dependencies
+yarn dev # run the project in dev mode
