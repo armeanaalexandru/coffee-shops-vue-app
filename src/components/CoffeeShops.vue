@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h1 class="text-center text-sm md:text-4xl">Where to get a good coffee ☕️</h1>
+      <h1 class="text-center text-lg md:text-4xl">Where to get a good coffee ☕️</h1>
       <div class="grid">
         <div class="col-12 md:col-4">
           <p class="text-sm md:text-md text-center">Filter shops:</p>
@@ -22,9 +22,15 @@
         </div>
         <div class="col-12 md:col-8">
           <p class="text-sm md:text-md text-center">Coffee Shops near you:</p>
-          <div class="my-5 p-1 border-1 border-round-md text-sm md:text-md">
+          <div
+            class="overflow-y-auto h-20rem my-5 p-3 border-1 border-round-md bg-blue-50 text-sm md:text-md"
+          >
             <div v-for="shop in coffeeShops" :key="shop.name">
-              {{ shop.name }}
+              <p class="mt-3 mb-2 text-lg font-bold">{{ shop.name }}</p>
+              <p class="my-1">
+                <b>{{ shop.x }}</b
+                >, <b>{{ shop.y }}</b> Distance
+              </p>
             </div>
           </div>
         </div>
