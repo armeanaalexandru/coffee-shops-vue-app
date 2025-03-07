@@ -1,55 +1,55 @@
 <template>
-  <div>
-    <div class="container">
-      <h1 class="text-center text-lg md:text-4xl">Where to get a good coffee ☕️</h1>
-      <div class="grid">
-        <div class="col-12 md:col-4">
-          <p class="text-sm md:text-md text-center">Filter shops:</p>
-          <div class="flex flex-column align-items-center">
-            <FloatLabel class="my-3" variant="on">
-              <InputNumber
-                id="label-x-value"
-                :useGrouping="false"
-                :minFractionDigits="2"
-                fluid
-                v-model="userInputX"
-              />
-              <label for="label-x-value">X value</label>
-            </FloatLabel>
-            <FloatLabel class="my-3" variant="on">
-              <InputNumber
-                id="label-y-value"
-                :useGrouping="false"
-                :minFractionDigits="2"
-                fluid
-                v-model="userInputY"
-              />
-              <label for="label-y-value">Y value</label>
-            </FloatLabel>
-            <FloatLabel class="my-3" variant="on">
-              <InputText id="label-name" v-model="userInputName" />
-              <label for="label-name">Name</label>
-            </FloatLabel>
-          </div>
+  <div class="container">
+    <h1 class="text-center text-lg md:text-4xl">Where to get a good coffee ☕️</h1>
+    <div class="grid">
+      <div class="col-12 md:col-4">
+        <p class="text-sm md:text-md text-center">Filter shops:</p>
+        <div class="flex flex-column align-items-center">
+          <FloatLabel class="my-3" variant="on">
+            <InputNumber
+              id="label-x-value"
+              :useGrouping="false"
+              :minFractionDigits="2"
+              fluid
+              :disabled="disabledInputs"
+              v-model="userInputX"
+            />
+            <label for="label-x-value">X value</label>
+          </FloatLabel>
+          <FloatLabel class="my-3" variant="on">
+            <InputNumber
+              id="label-y-value"
+              :useGrouping="false"
+              :minFractionDigits="2"
+              fluid
+              :disabled="disabledInputs"
+              v-model="userInputY"
+            />
+            <label for="label-y-value">Y value</label>
+          </FloatLabel>
+          <FloatLabel class="my-3" variant="on">
+            <InputText id="label-name" :disabled="disabledInputs" v-model="userInputName" />
+            <label for="label-name">Name</label>
+          </FloatLabel>
         </div>
-        <div class="col-12 md:col-8">
-          <p class="text-sm md:text-md text-center">Coffee Shops near you:</p>
-          <div
-            class="overflow-y-auto h-20rem my-5 p-3 border-1 border-round-md bg-blue-50 text-sm md:text-md"
-            :class="{ 'flex align-items-center justify-content-center': isLoading }"
-          >
-            <div v-if="isLoading" class="flex align-items-center justify-content-center gap-2">
-              <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-              <p>Loading coffee shops...</p>
-            </div>
-            <div v-if="errorMessage" class="text-red-600">{{ errorMessage }}</div>
-            <div v-for="shop in coffeeShops" :key="shop.name">
-              <p class="mt-3 mb-2 text-lg font-bold">{{ shop.name }}</p>
-              <p class="my-1">
-                <b>{{ shop.x }}</b
-                >, <b>{{ shop.y }}</b> Distance
-              </p>
-            </div>
+      </div>
+      <div class="col-12 md:col-8">
+        <p class="text-sm md:text-md text-center">Coffee Shops near you:</p>
+        <div
+          class="overflow-y-auto h-20rem my-5 p-3 border-1 border-round-md bg-blue-50 text-sm md:text-md"
+          :class="{ 'flex align-items-center justify-content-center': isLoading }"
+        >
+          <div v-if="isLoading" class="flex align-items-center justify-content-center gap-2">
+            <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+            <p>Loading coffee shops...</p>
+          </div>
+          <div v-if="errorMessage" class="text-red-600">{{ errorMessage }}</div>
+          <div v-for="shop in coffeeShops" :key="shop.name">
+            <p class="mt-3 mb-2 text-lg font-bold">{{ shop.name }}</p>
+            <p class="my-1">
+              <b>{{ shop.x }}</b
+              >, <b>{{ shop.y }}</b> Distance
+            </p>
           </div>
         </div>
       </div>
@@ -66,6 +66,7 @@ const userInputY = ref(null)
 const userInputName = ref(null)
 const coffeeShops = ref()
 const isLoading = ref(true)
+const disabledInputs = ref(true)
 const errorMessage = ref(null)
 const userX = parseFloat(0)
 const userY = parseFloat(0)
@@ -87,8 +88,15 @@ onMounted(async () => {
     errorMessage.value = error.message
   } finally {
     isLoading.value = false
+
+    if (isLoading.value || errorMessage.value) {
+      disabledInputs.value = true
+    } else {
+      disabledInputs.value = false
+    }
   }
 })
+
 // if (isNaN(userX) || isNaN(userY)) {
 //   console.error('Invalid coordinates. Please provide numbers.')
 //   return
